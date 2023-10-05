@@ -194,31 +194,59 @@ You can now make some changes in the code and check that they are visible in bot
 1. In Android Studio, navigate to the `shared/src/commonMain/kotlin/App.kt` file.
    This is the common entry point for your Compose Multiplatform app.
 
-   Here, you see the code responsible for rendering the "Hello, World!" button and the animated Compose Multiplatform logo:
+   Here, you see the code responsible for rendering the "Bottom tab bar and UI":
 
    ```kotlin
-   @OptIn(ExperimentalResourceApi::class)
-   @Composable
-   fun App() {
-       MaterialTheme {
-           var greetingText by remember { mutableStateOf("Hello, World!") }
-           var showImage by remember { mutableStateOf(false) }
-           Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-               Button(onClick = {
-                   greetingText = "Hello, ${getPlatformName()}"
-                   showImage = !showImage
-               }) {
-                   Text(greetingText)
-               }
-               AnimatedVisibility(showImage) {
-                   Image(
-                       painterResource("compose-multiplatform.xml"),
-                       null
-                   )
-               }
-           }
-       }
-   }
+   @OptIn(ExperimentalResourceApi::class, ExperimentalMaterial3Api::class)
+@Composable
+fun App() {
+    val textUpdateState = remember {
+        mutableStateOf(navigationItemList[0].name)
+    }
+    val homeViewModel  = getViewModel(key = Unit, viewModelFactory { HomeViewModel() })
+    val profileViewModel: ProductViewModel = getViewModel(Unit, viewModelFactory { ProductViewModel() })
+    MaterialTheme {
+        Scaffold(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color.White),
+            containerColor = Color.White,
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(text = textUpdateState.value, color = Color.White)
+                    },
+                    navigationIcon = {
+                        /*IconButton(onClick = {}) {
+                            Icon(Icons.Filled.ArrowBack, "backIcon")
+                        }*/
+                    },
+                    actions ={
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Filled.Search, "search Icon")
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Blue,)
+                )
+            },
+            bottomBar = {
+                CustomBottomAppBar(textUpdateState)
+            },
+            content = {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.White),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    ScreenNavigator(textUpdateState, homeViewModel, profileViewModel)
+                }
+            }
+        )
+
+    }
+}
    ```
 
 2. Update the shared code by adding a text field that will update the name displayed on the button:
