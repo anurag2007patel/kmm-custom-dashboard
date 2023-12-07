@@ -279,7 +279,7 @@ You can now make some changes in the code and check that they are visible in bot
         }
     )
 }
-   ```
+```
 
 3. Re-run both the `androidApp` and `iosApp` configurations. You'll see this change reflected in both the Android and iOS apps:
 
