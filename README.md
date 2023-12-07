@@ -248,12 +248,13 @@ You can now make some changes in the code and check that they are visible in bot
     }
 }
 ```
+```
+2. Bottom bar tab code:
 
-2. Bottom bar tab code
+``` kotlin
 
-   ```diff
-    @Composable
-    fun CustomBottomAppBar(textUpdateState: MutableState<String>) {
+@Composable
+fun CustomBottomAppBar(textUpdateState: MutableState<String>) {
     BottomAppBar(
         modifier = Modifier.fillMaxWidth(),
         containerColor = Color.LightGray,
@@ -261,18 +262,25 @@ You can now make some changes in the code and check that they are visible in bot
         tonalElevation = 5.dp,
         contentPadding = PaddingValues(10.dp),
         content = {
-            Row(modifier = Modifier.fillMaxWidth(),
+            Row(
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically){
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 navigationItemList.forEach {
-                    Column(verticalArrangement = Arrangement.SpaceBetween,
-                        horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(imageVector = it.icon, "")
-                        Text(it.name, modifier = Modifier.clickable(
-                            onClick = {
-                                textUpdateState.value = it.name
-                            }
-                        ))
+                    Column(
+                        verticalArrangement = Arrangement.SpaceBetween,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(imageVector = it.icon, contentDescription = "")
+                        Text(
+                            it.name,
+                            modifier = Modifier.clickable(
+                                onClick = {
+                                    textUpdateState.value = it.name
+                                }
+                            )
+                        )
                     }
                 }
             }
@@ -280,6 +288,7 @@ You can now make some changes in the code and check that they are visible in bot
     )
 }
 ```
+
 
 3. Re-run both the `androidApp` and `iosApp` configurations. You'll see this change reflected in both the Android and iOS apps:
 
